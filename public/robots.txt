@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://dbf.saradgajurel.com.np/sitemap.xml

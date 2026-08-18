@@ -1,0 +1,503 @@
+.app {
+  display: flex;
+  flex-direction: column;
+  /* Fixed (not min-) height so .main/.grid-wrap actually get a bounded
+     height to scroll within -- with min-height, the flex chain never
+     clips and the whole page scrolls instead, taking the sticky grid
+     header out of view. */
+  height: 100vh;
+  height: 100dvh;
+}
+
+.app-header {
+  padding: 10px 20px;
+  border-bottom: 1px solid var(--border);
+  display: flex;
+  align-items: center;
+  gap: 20px;
+  row-gap: 10px;
+  flex-wrap: wrap;
+  background: var(--panel);
+}
+.brand { display: flex; align-items: center; gap: 9px; flex-shrink: 0; }
+.brand-text h1 { font-size: 14.5px; margin: 0; line-height: 1.2; }
+.app-logo { flex-shrink: 0; }
+
+.header-file-actions {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.header-right {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-left: auto;
+  min-width: 0;
+}
+.header-right .file-info {
+  font-size: 12.5px;
+  color: var(--muted);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  max-width: 260px;
+}
+
+/* ---- Toolbar (row/data operations) ---- */
+.toolbar {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  row-gap: 8px;
+  flex-wrap: wrap;
+  padding: 8px 20px;
+  border-bottom: 1px solid var(--border);
+  background: var(--panel-2);
+}
+.toolbar-group {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+.toolbar-divider {
+  width: 1px;
+  align-self: stretch;
+  min-height: 20px;
+  background: var(--border);
+  flex-shrink: 0;
+}
+.toolbar-right { margin-left: auto; }
+
+.github-link {
+  color: var(--muted);
+  display: inline-flex;
+  padding: 6px;
+  border-radius: 8px;
+}
+.github-link:hover { color: var(--text); background: var(--panel-2); }
+
+.add-row-group { display: inline-flex; align-items: center; gap: 6px; }
+.add-row-count {
+  width: 54px;
+  background: var(--panel-2);
+  border: 1px solid var(--border);
+  color: var(--text);
+  border-radius: 8px;
+  padding: 8px 6px;
+  font-size: 13px;
+  text-align: center;
+}
+.add-row-count:focus { outline: none; border-color: var(--accent); }
+
+button.btn {
+  background: var(--panel-2);
+  border: 1px solid var(--border);
+  color: var(--text);
+  padding: 8px 14px;
+  border-radius: 8px;
+  font-size: 13px;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+}
+button.btn:hover:not(:disabled) { border-color: var(--accent); }
+button.btn:disabled { opacity: .4; cursor: not-allowed; }
+button.btn.primary {
+  background: linear-gradient(135deg, var(--accent), var(--accent-2));
+  border: none;
+  color: white;
+  font-weight: 600;
+}
+button.btn.primary:hover:not(:disabled) { filter: brightness(1.08); }
+button.btn.danger { color: var(--err); border-color: rgba(255,92,114,.35); }
+button.btn.danger:hover:not(:disabled) { border-color: var(--err); }
+button.btn.small { padding: 5px 10px; font-size: 12px; }
+
+.main {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+}
+
+.empty-state {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 32px;
+  padding: 40px;
+}
+.empty-state .tagline {
+  max-width: 480px;
+  text-align: center;
+  color: var(--muted);
+  font-size: 13px;
+  line-height: 1.5;
+  margin: 0;
+}
+.empty-options {
+  display: flex;
+  align-items: stretch;
+  gap: 20px;
+}
+.option-card {
+  border: 2px dashed var(--border);
+  border-radius: 14px;
+  padding: 32px 36px;
+  text-align: center;
+  color: var(--muted);
+  cursor: pointer;
+  width: 260px;
+  background: none;
+  font-family: inherit;
+}
+.option-card h2 { font-size: 15px; color: var(--text); margin: 0 0 8px; }
+.option-card p { margin: 0; font-size: 12.5px; line-height: 1.4; }
+.dropzone.drag { border-color: var(--accent); color: var(--text); background: rgba(79,140,255,.05); }
+.new-file-card { border-style: solid; }
+.new-file-card:hover { border-color: var(--accent); color: var(--text); background: rgba(79,140,255,.05); }
+.option-divider { font-size: 12px; color: var(--muted); text-transform: uppercase; letter-spacing: .05em; align-self: center; }
+
+@media (max-width: 620px) {
+  .empty-options { flex-direction: column; align-items: center; }
+  .option-card { width: 100%; max-width: 320px; }
+}
+
+.toast {
+  position: fixed;
+  bottom: 20px;
+  right: 20px;
+  z-index: 100;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  max-width: 420px;
+  padding: 12px 14px;
+  border-radius: 10px;
+  font-size: 13px;
+  box-shadow: 0 8px 24px rgba(0,0,0,.35);
+  animation: toast-in .18s ease-out;
+  background: var(--panel-2);
+}
+.toast.err { border: 1px solid rgba(255,92,114,.4); color: var(--err); }
+.toast.ok { border: 1px solid rgba(62,207,142,.4); color: var(--ok); }
+.toast.warn { border: 1px solid rgba(255,182,72,.4); color: var(--warn); }
+.toast-close {
+  background: none;
+  border: none;
+  color: inherit;
+  opacity: .6;
+  cursor: pointer;
+  font-size: 15px;
+  line-height: 1;
+  padding: 0;
+}
+.toast-close:hover { opacity: 1; }
+@keyframes toast-in {
+  from { opacity: 0; transform: translateY(8px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+/* ---- Grid ---- */
+.move-btn {
+  background: none;
+  border: none;
+  color: var(--muted);
+  cursor: pointer;
+  font-size: 9px;
+  line-height: 1;
+  padding: 2px 4px;
+  display: block;
+}
+.move-btn:hover:not(:disabled) { color: var(--accent); }
+.move-btn:disabled { opacity: .25; cursor: not-allowed; }
+.move-arrows { display: inline-flex; flex-direction: column; }
+.schema-row .move-cell { display: flex; align-items: center; justify-content: center; }
+
+.drag-handle {
+  display: inline-block;
+  color: var(--muted);
+  font-size: 14px;
+  padding: 0 4px;
+  cursor: grab;
+  user-select: none;
+  vertical-align: middle;
+}
+.drag-handle:hover { color: var(--accent); }
+.data-grid .row.drag-over .cell { box-shadow: inset 0 2px 0 var(--accent); }
+
+.grid-wrap {
+  flex: 1;
+  overflow: auto;
+  /* No padding at all: top/left specifically can't have any, since sticky
+     elements anchor to the padding edge but the padding itself scrolls
+     away like ordinary content (it isn't a persistent visual buffer) --
+     with it, a sliver of scrolled-past content peeks through above/left
+     of the sticky header row and frozen rail right as they engage.
+     Right/bottom have no bug reason to keep it, so dropped for a flush
+     edge-to-edge look on all sides. */
+  padding: 0;
+}
+.data-grid {
+  display: grid;
+  width: max-content;
+  min-width: 100%;
+  font-family: var(--mono);
+  font-size: 12.5px;
+  --select-col-w: 34px;
+  --move-col-w: 52px;
+}
+/* Each `.row` is display:contents -- it puts its `.cell` children directly
+   into the grid (so a single gridTemplateColumns applies uniformly to
+   every row) while still existing in the DOM for :hover/.selected
+   targeting and for row-level drag handlers. Plain grid items (unlike
+   native <table> td/th) respect position:sticky + z-index reliably even
+   when a sticky row and sticky columns overlap, which is what a <table>
+   could not do here. */
+.data-grid .row { display: contents; }
+.data-grid .cell {
+  padding: 0;
+  border-bottom: 1px solid var(--border);
+  border-right: 1px solid var(--border);
+  white-space: nowrap;
+  display: flex;
+  align-items: center;
+}
+.data-grid .cell.head {
+  position: sticky;
+  top: 0;
+  background: var(--panel-2);
+  padding: 8px 10px;
+  color: var(--text);
+  z-index: 2;
+}
+.data-grid .cell.head.filter-head {
+  top: 33px;
+  padding: 4px;
+}
+.data-grid .cell.head.sortable { cursor: pointer; user-select: none; }
+.data-grid .cell.head.sortable:hover { color: var(--accent); }
+.data-grid .cell .type-tag {
+  color: var(--muted);
+  font-weight: 400;
+  margin-left: 6px;
+  font-size: 11px;
+}
+.data-grid .cell .sort-arrow { color: var(--accent); }
+
+/* Frozen left rail (checkbox, drag handle, row #): stays pinned and opaque
+   while the grid scrolls horizontally, so scrolled-past cell content
+   disappears behind it instead of bleeding through. */
+.data-grid .cell.select-cell, .data-grid .cell.move-cell, .data-grid .cell.row-num {
+  position: sticky;
+  z-index: 1;
+  background: var(--panel);
+  transform: translateZ(0);
+  backface-visibility: hidden;
+}
+.data-grid .cell.select-cell { left: 0; padding: 6px 8px; justify-content: center; }
+.data-grid .cell.move-cell { left: var(--select-col-w); padding: 2px 4px; justify-content: center; }
+.data-grid .cell.row-num { left: calc(var(--select-col-w) + var(--move-col-w)); padding: 6px 10px; color: var(--muted); justify-content: flex-end; }
+.data-grid .cell.head.select-cell, .data-grid .cell.head.move-cell, .data-grid .cell.head.row-num {
+  z-index: 3;
+  background: var(--panel-2);
+}
+.data-grid .row:hover .cell.select-cell,
+.data-grid .row:hover .cell.move-cell,
+.data-grid .row:hover .cell.row-num {
+  background: color-mix(in srgb, var(--text) 2%, var(--panel));
+}
+.data-grid .row.selected .cell.select-cell,
+.data-grid .row.selected .cell.move-cell,
+.data-grid .row.selected .cell.row-num {
+  background: color-mix(in srgb, var(--accent) 8%, var(--panel));
+}
+
+.col-filter { display: flex; flex-direction: column; gap: 4px; min-width: 110px; }
+.filter-select, .filter-value {
+  width: 100%;
+  background: var(--panel);
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  padding: 5px 7px;
+  font-family: var(--mono);
+  font-size: 11.5px;
+  font-weight: 400;
+  color: var(--text);
+  box-sizing: border-box;
+}
+.filter-select:focus, .filter-value:focus { outline: none; border-color: var(--accent); }
+
+.data-grid .cell.select-cell input[type=checkbox] {
+  width: 15px;
+  height: 15px;
+  min-width: 0;
+  margin: 0;
+  accent-color: var(--accent);
+  cursor: pointer;
+}
+.data-grid .cell.select-cell input[type=checkbox]:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 2px;
+}
+.data-grid .cell input:not([type=checkbox]) {
+  width: 100%;
+  min-width: 90px;
+  background: transparent;
+  border: none;
+  padding: 6px 10px;
+  font-family: var(--mono);
+  font-size: 12.5px;
+  color: var(--text);
+}
+.data-grid .cell input:focus {
+  outline: 2px solid var(--accent);
+  outline-offset: -2px;
+  background: var(--panel-2);
+}
+/* Zebra striping on the non-frozen data cells only -- deliberately excludes
+   select-cell/move-cell/row-num (rather than relying on specificity to keep
+   the rail's own rule winning) so the frozen rail never gets a
+   semi-transparent background, which would let horizontally-scrolled
+   content bleed through it again. */
+.data-grid .row.odd .cell:not(.select-cell):not(.move-cell):not(.row-num) {
+  background: rgba(255,255,255,.025);
+}
+.data-grid .row:hover .cell { background: rgba(255,255,255,.05); }
+.data-grid .row.selected .cell { background: rgba(79,140,255,.08); }
+
+.pagination {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 10px 24px;
+  border-top: 1px solid var(--border);
+  font-size: 13px;
+  color: var(--muted);
+}
+
+/* ---- Modal ---- */
+.modal-backdrop {
+  position: fixed; inset: 0;
+  background: rgba(0,0,0,.55);
+  display: flex; align-items: center; justify-content: center;
+  z-index: 50;
+  padding: 20px;
+}
+.modal {
+  background: var(--panel);
+  border: 1px solid var(--border);
+  border-radius: 14px;
+  width: 100%;
+  max-width: 640px;
+  max-height: 86vh;
+  overflow: auto;
+  padding: 24px;
+}
+.modal h2 { font-size: 16px; margin: 0 0 4px; }
+.modal .modal-sub { color: var(--muted); font-size: 13px; margin-bottom: 18px; }
+.modal .modal-actions { display: flex; justify-content: flex-end; gap: 10px; margin-top: 20px; }
+
+.schema-editor { display: flex; flex-direction: column; gap: 8px; }
+.schema-row {
+  display: grid;
+  /* Fixed (not auto) first/last columns: .schema-row and .schema-head are
+     separate grids, so an `auto` track sizes independently per grid based
+     on that row's own content -- the header's move/delete cells are empty
+     while the data rows' aren't, so `auto` gave them different widths and
+     threw off column alignment between the header and the rows. */
+  grid-template-columns: 40px 2.2fr 1fr .5fr .5fr 36px;
+  gap: 8px;
+  align-items: center;
+  /* Inputs/selects stretch via their own width:100%, but the move-cell and
+     delete button have no explicit width -- without this they default to
+     the grid's start edge instead of sitting centered in their column. */
+  justify-items: center;
+  border-radius: 6px;
+}
+.schema-row.drag-over { box-shadow: inset 0 2px 0 var(--accent); }
+.schema-row input, .schema-row select {
+  background: var(--panel-2);
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  padding: 7px 8px;
+  font-size: 13px;
+  width: 100%;
+}
+/* Native <select> arrows sit right at the box edge with no breathing room
+   by default -- swap in a custom chevron with real padding around it. */
+.schema-row select, .field-group select, .filter-select {
+  appearance: none;
+  -webkit-appearance: none;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='9' height='5' viewBox='0 0 9 5' fill='none'%3E%3Cpath d='M1 1L4.5 4.5L8 1' stroke='%239aa3b2' stroke-width='1.4' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right 7px center;
+  padding-right: 20px;
+}
+.schema-head {
+  display: grid;
+  /* Fixed (not auto) first/last columns: .schema-row and .schema-head are
+     separate grids, so an `auto` track sizes independently per grid based
+     on that row's own content -- the header's move/delete cells are empty
+     while the data rows' aren't, so `auto` gave them different widths and
+     threw off column alignment between the header and the rows. */
+  grid-template-columns: 40px 2.2fr 1fr .5fr .5fr 36px;
+  gap: 8px;
+  font-size: 11px;
+  color: var(--muted);
+  text-transform: uppercase;
+  letter-spacing: .04em;
+  padding: 0 2px;
+}
+
+.field-group { display: flex; flex-direction: column; gap: 6px; margin-bottom: 14px; }
+.field-group label { font-size: 12.5px; color: var(--muted); }
+.field-group input, .field-group select {
+  background: var(--panel-2);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  padding: 9px 10px;
+  font-size: 13.5px;
+  font-family: var(--mono);
+}
+.field-group-row { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
+.radio-row { display: flex; flex-wrap: wrap; gap: 8px 16px; align-items: center; font-size: 13.5px; }
+.radio-row label { display: flex; align-items: center; gap: 6px; cursor: pointer; }
+.error-list { color: var(--err); font-size: 12.5px; margin-top: 10px; }
+.error-list div { margin-bottom: 2px; }
+
+.rules-editor { display: flex; flex-direction: column; gap: 8px; margin: 14px 0; }
+.rules-head {
+  display: grid;
+  grid-template-columns: 1fr .8fr 1.6fr;
+  gap: 10px;
+  font-size: 11px;
+  color: var(--muted);
+  text-transform: uppercase;
+  letter-spacing: .04em;
+  padding: 0 2px;
+}
+.rules-row {
+  display: grid;
+  grid-template-columns: 1fr .8fr 1.6fr;
+  gap: 10px;
+  align-items: start;
+}
+.rules-field-name { font-size: 12.5px; padding-top: 8px; }
+.rules-row select, .rules-row input {
+  background: var(--panel-2);
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  padding: 7px 8px;
+  font-size: 12.5px;
+  width: 100%;
+}
+.rules-inline { display: flex; gap: 6px; }
+.rules-hint { font-size: 11.5px; color: var(--muted); padding-top: 6px; }
+.rules-hint.error { color: var(--err); margin-top: 4px; padding-top: 0; }

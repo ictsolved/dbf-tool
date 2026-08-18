@@ -1,0 +1,62 @@
+:root {
+  --bg: #0f1115;
+  --panel: #171a21;
+  --panel-2: #1e222b;
+  --border: #2a2f3a;
+  --text: #e6e8ec;
+  --muted: #9aa3b2;
+  --accent: #4f8cff;
+  --accent-2: #7c5cff;
+  --ok: #3ecf8e;
+  --warn: #ffb648;
+  --err: #ff5c72;
+  --mono: ui-monospace, SFMono-Regular, 'SF Mono', Menlo, Consolas, monospace;
+  color-scheme: dark;
+}
+
+* { box-sizing: border-box; }
+
+body {
+  margin: 0;
+  background: var(--bg);
+  color: var(--text);
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+  line-height: 1.5;
+}
+
+#root {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+button {
+  font-family: inherit;
+}
+
+input, select {
+  font-family: inherit;
+  color: var(--text);
+}
+/* App-wide so a disabled field (e.g. Decimals on a non-numeric column
+   type) reads as clearly non-interactive rather than looking like a
+   normal editable field that just happens to ignore input. */
+input:disabled, select:disabled {
+  opacity: .45;
+  cursor: not-allowed;
+}
+
+/* No spinner arrows on any numeric input, app-wide (grid cells, forms,
+   toolbar counters) -- they add visual clutter at this input density and
+   scroll/keyboard entry works fine without them. */
+input[type=number] {
+  -moz-appearance: textfield;
+  appearance: textfield;
+}
+input[type=number]::-webkit-outer-spin-button,
+input[type=number]::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+.mono { font-family: var(--mono); }
